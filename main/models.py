@@ -44,9 +44,3 @@ class ViewLog(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     object = models.ForeignKey(Object, on_delete=models.CASCADE)
     created_at = models.DateTimeField()
-
-
-class SearchHistory(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    consulta =  models.CharField(max_length=200)
-    created_at = models.DateTimeField()
