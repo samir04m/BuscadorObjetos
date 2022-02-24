@@ -1,0 +1,22 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Buscar{% endblock %}
+
+{% block content %}
+    <div class="container py-4">
+        <h3>Hola {{request.user.username}}, ¿Qué deseas buscar?</h3>
+        <div class="input-group my-3">
+            <input type="text" class="form-control" placeholder="Ingresa el nombre del objeto que buscas" aria-label="Ingresa el nombre del objeto que buscas" aria-describedby="button-addon2">
+            <button class="btn btn-outline-primary" type="button" id="button-addon2">Buscar</button>
+        </div>
+
+        {% if search_history %}
+            <div class="mt-5 pt-5">
+                <h5>Búsquedas recientes</h5>
+                <a href="">Papeles registro predial casa sincelejo</a>
+            </div>
+        {% endif %}       
+
+    </div>
+
+{% endblock %}

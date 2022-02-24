@@ -1,0 +1,37 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Identificate{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="m-4 p-5 bg-light rounded-3 shadow">
+            <div class="container-fluid py-5">
+                <h1 class="display-5 fw-bold">
+                    <i class="fa-brands fa-searchengin"></i> Buscador de objetos
+                </h1>
+                <p class="col-11 fs-4 pb-3">
+                    Esta herramienta le permitirá encontrar de forma rápida y sencilla la ubicación de un objeto en particular dentro de su casa.
+                </p>
+                <p class="col-10 fs-5">
+                    Para comenzar ingrese con su usuario asignado al sistema:
+                </p>
+                <a href="{% url 'main:login' 'andy' %}" class="btn btn-outline-primary btn-lg m-1">
+                    <i class="fa-solid fa-user-astronaut fa-5x"></i>
+                    <div class="mt-2 fw-bold">Andy</div>
+                </a>
+                <a href="{% url 'main:login' 'pilar' %}" class="btn btn-outline-primary btn-lg m-1">
+                    <i class="fas fa-user fa-5x"></i>
+                    <div class="mt-2 fw-bold">Pilar</div>
+                </a>
+                <a href="{% url 'main:login' 'yesid' %}" class="btn btn-outline-primary btn-lg m-1">
+                    <i class="fas fa-user-tie fa-5x"></i>
+                    <div class="mt-2 fw-bold">Yesid</div>
+                </a>
+                <a href="{% url 'main:login' 'samir' %}" class="btn btn-outline-primary btn-lg m-1">
+                    <i class="fas fa-user-secret fa-5x"></i>
+                    <div class="mt-2 fw-bold">Samir</div>
+                </a>
+            </div>
+        </div>
+    </div>
+{% endblock %}
