@@ -33,18 +33,20 @@ Inicializamos repositorio: ```git init```
 Y realizamos el primer commit initial state
 
 ## Creación de aplicacion
-Crear una carpeta llamada ```apps``` y dentro crear un archivo ```__init__.py```
-
 ```
 python manage.py startapp appName
 ```
-Movemos la carpeta de la app dentro de la carpeta ```apps```
+Nota: Con la version 4 de django no pude hacer que me funcionara metiendola dentro de la carpeta apps. Entonces dejarla en la raiz del proyecto.
 
-Nota: Con la version 4 de django ya no es necesario registrar el path de la app en el archivo settings.py como se hacia antes.
+Ahora registrar la app creada en settings.py
+```
+INSTALLED_APPS = [
+    ...
+    'appName.apps.AppNameConfig',
+]
+```
 
 ## Configuracion basica del proyecto
-Revisar los ajustes de settings en el commit: Configuracion inicial y creacion de app
-
 ```
 
 ```
