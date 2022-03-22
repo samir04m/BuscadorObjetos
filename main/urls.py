@@ -9,4 +9,5 @@ urlpatterns = [
     path('logout/', views.Logout, name='logout'),
     
     path('objeto/<int:id>', views.Details, name='details'),
+    path('busquedas/', views.MySearches, name='searches'),
 ]

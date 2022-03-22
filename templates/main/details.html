@@ -74,10 +74,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
-
-
-                
+                </div>                
             </div>
             <div class="col-sm-12 offset-lg-1 col-lg-4">
                 <h5>Foto del Objeto</h5>
@@ -89,9 +86,19 @@
                 <div class="card my-2">
                     <div class="card-body py-2">
                         <h5>Comentarios</h5>
-                        <p class="mb-1">{{ object.details }}</p>
+                        {% if object.details %}
+                            <p class="mb-1">{{ object.details }}</p>
+                        {% else %}
+                            <p class="mb-1">Sin comentarios</p>
+                        {% endif %}
                     </div>
                 </div>
+                <h5>Usuarios que han consultado este objeto</h5>
+                <ul>
+                    {% for i in object.viewlog_set.all %}
+                        <li>{{ i.user }} <span class="text-muted">{{ i.last_seen|date:'d/m/Y h:i A' }}</span></li>
+                    {% endfor %}
+                </ul>
             </div>
         </div>
     </div>

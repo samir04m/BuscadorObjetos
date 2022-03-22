@@ -4,6 +4,7 @@ from django.http.response import HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from datetime import datetime
 from django.db.models import Q
 from functools import reduce
@@ -11,10 +12,23 @@ import operator
 from .models import *
 
 def Igresar(request):
+    names = ["Andy", "Pilar", "Yesid", "Samir"]
+    for name in names:
+        user = User.objects.filter(username=name).first()
+        if not user:
+            newUser = User.objects.create_user(
+                username=name,
+                email=name+"@email.com",
+                password="pass0100"
+            )
+            if name == "Samir":
+                newUser.is_superuser = True
+                newUser.is_staff = True
+                newUser.save()
     return render(request, 'main/login.html')
 
 def Login(request, username):
-    user = authenticate(username=username, password="samk1234")
+    user = authenticate(username=username, password="pass0100")
     if user:
         login(request, user)
         return HttpResponseRedirect('/')
@@ -66,3 +80,8 @@ def Details(request, id):
     log.save()
 
     return render(request, 'main/details.html', { 'object':object })
+
+@login_required(login_url='/ingresar/')
+def MySearches(request):
+    searches = ViewLog.objects.filter(user=request.user)
+    return render(request, 'main/mysearches.html', { 'searches':searches })

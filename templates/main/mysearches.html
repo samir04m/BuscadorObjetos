@@ -1,0 +1,27 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Mis Busquedas{% endblock %}
+
+{% block content %}
+    <div class="container mt-3">
+        <div class="row">
+            <div class="col-sm-12 col-lg-8">
+                {% if searches %}
+                    <h4>Estas han sido tus ultimas busquedas</h4>
+                    {% for search in searches %}
+                        <div class="card mb-3">
+                            <div class="card-body pt-1 pb-3 px-3">
+                                <a href="{% url 'main:details' search.object.id %}" class="fs-5">{{  search.object.name }}</a> <br>
+                                <div class="px-3 text-muted">
+                                    {{ search.object.subcontainer.container.room.name }} > {{  search.object.subcontainer.container.name }} > {{  search.object.subcontainer.name }}
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <h4>No tienes busquedas recientes.</h4>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
