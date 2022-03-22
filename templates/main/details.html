@@ -57,19 +57,19 @@
                 
                                 <p class="fs-5 mb-1 mt-3"> <b> 1. Habitación:</b> {{ object.subcontainer.container.room.name}}</p>
                                 {% if object.subcontainer.container.room.photo %}
-                                <img src="{{ object.subcontainer.container.room.photo.url }}" class="img-fluid" alt="Photo"
+                                    <img src="{{ object.subcontainer.container.room.photo.url }}" class="img-fluid" alt="Photo"
                                     id="imgRoom">
                                 {% endif %}
                 
                                 <p class="fs-5 mb-1 mt-3"> <b> 2. Contenedor:</b> {{ object.subcontainer.container.name}}</p>
-                                {% if object.subcontainer.container.room.photo %}
-                                <img src="{{ object.subcontainer.container.photo.url }}" class="img-fluid" alt="Photo"
+                                {% if object.subcontainer.container.photo %}
+                                    <img src="{{ object.subcontainer.container.photo.url }}" class="img-fluid" alt="Photo"
                                     id="imgContainer">
                                 {% endif %}
                 
                                 <p class="fs-5 mb-1 mt-3"> <b> 3. Subcontenedor:</b> {{ object.subcontainer.name}}</p>
-                                {% if object.subcontainer.container.room.photo %}
-                                <img src="{{ object.subcontainer.photo.url }}" class="img-fluid" alt="Photo" id="imgSubcontainer">
+                                {% if object.subcontainer.photo %}
+                                    <img src="{{ object.subcontainer.photo.url }}" class="img-fluid" alt="Photo" id="imgSubcontainer">
                                 {% endif %}
                             </div>
                         </div>

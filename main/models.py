@@ -1,9 +1,15 @@
 from django.db import models
 from django.contrib.auth.models import User
+from PIL import Image
 
 class Room(models.Model):
     name = models.CharField(max_length=100)
     photo = models.ImageField(upload_to="rooms", null=True, blank=True)
+
+    def save(self, *args, **kwargs):
+       super(Room, self).save(*args, **kwargs)
+       image = Image.open(self.photo.path)
+       image.save(self.photo.path, quality=20, optimize=True)
 
     def __str__(self):
         return str(self.name)
@@ -14,6 +20,11 @@ class Container(models.Model):
     room = models.ForeignKey(Room, on_delete=models.CASCADE)
     photo = models.ImageField(upload_to="containers", null=True, blank=True)
 
+    def save(self, *args, **kwargs):
+       super(Container, self).save(*args, **kwargs)
+       image = Image.open(self.photo.path)
+       image.save(self.photo.path, quality=20, optimize=True)
+
     def __str__(self):
         return str(self.name)
 
@@ -23,8 +34,13 @@ class Subcontainer(models.Model):
     container = models.ForeignKey(Container, on_delete=models.CASCADE)
     photo = models.ImageField(upload_to="subcontainers", null=True, blank=True)
 
+    def save(self, *args, **kwargs):
+       super(Subcontainer, self).save(*args, **kwargs)
+       image = Image.open(self.photo.path)
+       image.save(self.photo.path, quality=20, optimize=True)
+
     def __str__(self):
-        return str(self.name)
+        return "{} ({})".format(self.name, self.container.name)
 
 
 class Object(models.Model):
@@ -35,6 +51,11 @@ class Object(models.Model):
     details = models.TextField(null=True, blank=True)
     created_at = models.DateTimeField()
     updated_at = models.DateTimeField()
+
+    def save(self, *args, **kwargs):
+       super(Object, self).save(*args, **kwargs)
+       image = Image.open(self.photo.path)
+       image.save(self.photo.path, quality=20, optimize=True)
 
     def __str__(self):
         return str(self.name)
