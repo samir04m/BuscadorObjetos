@@ -44,3 +44,7 @@ class ViewLog(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     object = models.ForeignKey(Object, on_delete=models.CASCADE)
     created_at = models.DateTimeField()
+    last_seen = models.DateTimeField()
+
+    def __str__(self):
+        return "{} - {}".format(self.user.username, self.object.name)

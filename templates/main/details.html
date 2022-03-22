@@ -1,0 +1,116 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Detalles{% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/viewerjs/1.10.4/viewer.css" integrity="sha512-caKp8jXImkCfnEGA8RCJPQeW/+wtI9reknlKZMlKnIE8RHgxMBCppLsPvM429eoo0+PSZc9J/dQjVH3OH/K3Xg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/viewerjs/1.10.4/viewer.min.js" integrity="sha512-2HLzgJH7ZNywnEDB1HqijieFxszStt3QXS8Qk9m/VMUV/asMWlz9PmibHsvWIz9rtKOOr28z8zu1iJ3pf/TTHQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+{% endblock %}
+
+{% block content %}
+    <div class="container py-4">
+        <h3 class="text-primary">{{object.name}}</h3>
+        <div class="row pt-3">
+            <div class="col-sm-12 col-lg-7 mb-4">
+
+                <div class="accordion" id="accordionExample">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingOne">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne"
+                                aria-expanded="true" aria-controls="collapseOne">
+                                Resumen de ubicación
+                            </button>
+                        </h2>
+                        <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne"
+                            data-bs-parent="#accordionExample">
+                            <div class="accordion-body">
+                                <table class="table table-responsive-sm table-borderless">
+                                    <tbody>
+                                        <tr>
+                                            <th>Lugar</th>
+                                            <td>{{ object.subcontainer.container.room.name}}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Contenedor</th>
+                                            <td>{{ object.subcontainer.container.name}}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Subcontenedor</th>
+                                            <td>{{ object.subcontainer.name}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingTwo">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                Ubicación detallada
+                            </button>
+                        </h2>
+                        <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo"
+                            data-bs-parent="#accordionExample">
+                            <div class="accordion-body">
+                                <h5>La ubicación del objeto es la siguente:</h5>
+                
+                                <p class="fs-5 mb-1 mt-3"> <b> 1. Habitación:</b> {{ object.subcontainer.container.room.name}}</p>
+                                {% if object.subcontainer.container.room.photo %}
+                                <img src="{{ object.subcontainer.container.room.photo.url }}" class="img-fluid" alt="Photo"
+                                    id="imgRoom">
+                                {% endif %}
+                
+                                <p class="fs-5 mb-1 mt-3"> <b> 2. Contenedor:</b> {{ object.subcontainer.container.name}}</p>
+                                {% if object.subcontainer.container.room.photo %}
+                                <img src="{{ object.subcontainer.container.photo.url }}" class="img-fluid" alt="Photo"
+                                    id="imgContainer">
+                                {% endif %}
+                
+                                <p class="fs-5 mb-1 mt-3"> <b> 3. Subcontenedor:</b> {{ object.subcontainer.name}}</p>
+                                {% if object.subcontainer.container.room.photo %}
+                                <img src="{{ object.subcontainer.photo.url }}" class="img-fluid" alt="Photo" id="imgSubcontainer">
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                
+            </div>
+            <div class="col-sm-12 offset-lg-1 col-lg-4">
+                <h5>Foto del Objeto</h5>
+                {% if object.photo %}
+                    <img src="{{ object.photo.url }}" class="img-fluid" alt="Photo" id="imgObject">
+                {% else %}
+                    <img src="https://dummyimage.com/600x700/707070/c9c9c9.png&text=++Sin foto++" class="img-fluid" alt="Photo">
+                {% endif %}
+                <div class="card my-2">
+                    <div class="card-body py-2">
+                        <h5>Comentarios</h5>
+                        <p class="mb-1">{{ object.details }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block script %}
+    <script type="text/javascript">
+        {% if object.subcontainer.container.room.photo %}
+            const viewerRoom = new Viewer(document.getElementById('imgRoom'));
+        {% endif %}
+        {% if object.subcontainer.container.photo %}
+            const viewerContainer = new Viewer(document.getElementById('imgContainer'));
+        {% endif %}
+        {% if object.subcontainer.photo %}
+            const viewerSubcontainer = new Viewer(document.getElementById('imgSubcontainer')    );
+        {% endif %}
+        {% if object.photo %}
+            const viewerObject = new Viewer(document.getElementById('imgObject'));
+        {% endif %}
+    </script>
+{% endblock %}
+

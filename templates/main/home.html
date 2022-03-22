@@ -20,7 +20,7 @@
                 {% for r in results %}
                     <div class="card mb-3">
                         <div class="card-body pt-1 pb-3 px-3">
-                            <a href="" class="fs-5">{{ r.name }}</a> <br>
+                            <a href="{% url 'main:details' r.id %}" class="fs-5">{{ r.name }}</a> <br>
                             <div class="px-3 text-muted">
                                 {{ r.subcontainer.container.room.name }} > {{ r.subcontainer.container.name }} > {{ r.subcontainer.name }}
                             </div>
