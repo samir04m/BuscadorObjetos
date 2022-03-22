@@ -1,0 +1,36 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Admin{% endblock %}
+
+{% block content %}
+    <div class="container mt-3">
+        <h2>Rooms</h2>
+        <hr>
+        <div class="row">
+            {% for room in rooms %}
+                <div class="col-sm-12 col-md-6 col-lg-4">
+                    <div class="card shadow my-3">
+                        {% if room.photo %}
+                            <img src="{{ room.photo.url }}" class="card-img-top" alt="Photo">
+                        {% else %}
+                            <img src="https://dummyimage.com/600x450/707070/c9c9c9.png&text=++Sin foto++" class="card-img-top" alt="Photo">
+                        {% endif %}
+                        <div class="card-body">
+                            <h5 class="card-title">{{ room.name }}</h5>
+                            <div class="text-center">
+                                <a href="{% url 'myadmin:adminroom' room.id %}" class="card-link btn btn-outline-primary">
+                                    <i class="fa-solid fa-list-check"></i> Admin this room
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="text-center my-4">
+            <a href="/admin/main/room/add/" class="btn btn-outline-primary" target="_blank">
+                <i class="fa-solid fa-circle-plus"></i> Create room
+            </a>
+        </div>
+    </div>
+{% endblock %}

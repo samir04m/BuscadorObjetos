@@ -7,9 +7,10 @@ class Room(models.Model):
     photo = models.ImageField(upload_to="rooms", null=True, blank=True)
 
     def save(self, *args, **kwargs):
-       super(Room, self).save(*args, **kwargs)
-       image = Image.open(self.photo.path)
-       image.save(self.photo.path, quality=20, optimize=True)
+        super(Room, self).save(*args, **kwargs)
+        if self.photo:
+            image = Image.open(self.photo.path)
+            image.save(self.photo.path, quality=20, optimize=True)
 
     def __str__(self):
         return str(self.name)
@@ -21,12 +22,13 @@ class Container(models.Model):
     photo = models.ImageField(upload_to="containers", null=True, blank=True)
 
     def save(self, *args, **kwargs):
-       super(Container, self).save(*args, **kwargs)
-       image = Image.open(self.photo.path)
-       image.save(self.photo.path, quality=20, optimize=True)
+        super(Container, self).save(*args, **kwargs)
+        if self.photo:
+            image = Image.open(self.photo.path)
+            image.save(self.photo.path, quality=20, optimize=True)
 
     def __str__(self):
-        return str(self.name)
+        return "{} ({})".format(self.name, self.room.name)
 
 
 class Subcontainer(models.Model):
@@ -35,9 +37,10 @@ class Subcontainer(models.Model):
     photo = models.ImageField(upload_to="subcontainers", null=True, blank=True)
 
     def save(self, *args, **kwargs):
-       super(Subcontainer, self).save(*args, **kwargs)
-       image = Image.open(self.photo.path)
-       image.save(self.photo.path, quality=20, optimize=True)
+        super(Subcontainer, self).save(*args, **kwargs)
+        if self.photo:
+            image = Image.open(self.photo.path)
+            image.save(self.photo.path, quality=20, optimize=True)
 
     def __str__(self):
         return "{} ({})".format(self.name, self.container.name)
@@ -53,9 +56,10 @@ class Object(models.Model):
     updated_at = models.DateTimeField()
 
     def save(self, *args, **kwargs):
-       super(Object, self).save(*args, **kwargs)
-       image = Image.open(self.photo.path)
-       image.save(self.photo.path, quality=20, optimize=True)
+        super(Object, self).save(*args, **kwargs)
+        if self.photo:
+            image = Image.open(self.photo.path)
+            image.save(self.photo.path, quality=20, optimize=True)
 
     def __str__(self):
         return str(self.name)

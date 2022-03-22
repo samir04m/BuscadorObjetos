@@ -1,0 +1,50 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Admin Room{% endblock %}
+
+{% block content %}
+    <div class="container mt-3">
+        <h2>Admin: {{room}}</h2>
+        <hr>
+        {% for container in room.container_set.all %}
+            <div class="card my-4 shadow">
+                <div class="row g-0">
+                    <div class="col-md-4">
+                        {% if container.photo %}
+                            <img src="{{ container.photo.url }}" class="img-fluid rounded-start" alt="Photo">
+                        {% else %}
+                            <img src="https://dummyimage.com/600x450/707070/c9c9c9.png&text=++Sin foto++" class="img-fluid rounded-start" alt="Photo">
+                        {% endif %}
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                {{ container.name }}
+                                <a href="/admin/main/subcontainer/add/?container={{container.id}}" class="btn btn-outline-primary btn-sm float-end" target="_blank">
+                                    <i class="fa-solid fa-circle-plus"></i> Add
+                                </a>
+                            </h5>
+                            <div class="row mt-3">
+                                {% for subcontainer in container.subcontainer_set.all %}
+                                    <div class="col-sm-12 col-md-6 my-1">
+                                        <a href="/admin/main/object/add/?subcontainer={{subcontainer.id}}" class="btn btn-lg btn-outline-primary d-grid" target="_blank">
+                                            {{ subcontainer.name }}
+                                        </a>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                            <div class="text-center my-4">
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+        <div class="text-center my-4">
+            <a href="/admin/main/container/add/?room={{room.id}}" class="btn btn-outline-primary" target="_blank">
+                <i class="fa-solid fa-circle-plus"></i> Add container
+            </a>
+        </div>
+    </div>
+{% endblock %}

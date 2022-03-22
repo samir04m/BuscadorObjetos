@@ -16,11 +16,14 @@
                 {% if request.user.is_authenticated %}
                     {% if request.user.is_superuser %}
                         <li class="nav-item">
+                            <a class="nav-link" href="/myadmin">My Admin</a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link" href="/admin" target="_blank">Admin</a>
                         </li>
                     {% endif %}
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'main:logout' %}">Salir</a>
+                        <a class="nav-link" href="{% url 'main:logout' %}">Cerrar Sesión</a>
                     </li>
                 {% endif %}
             </ul>
