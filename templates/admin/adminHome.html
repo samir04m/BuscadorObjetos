@@ -4,12 +4,12 @@
 
 {% block content %}
     <div class="container my-3">
-        <h2><i class="fa-solid fa-folder-closed"></i> Object Explorer</h2>
+        <h2 class="animate__animated animate__fadeInDown"><i class="fa-solid fa-folder-closed"></i> Object Explorer</h2>
         <hr>
         <div class="row">
             {% for room in rooms %}
                 <div class="col-sm-12 col-md-6 col-lg-4">
-                    <div class="card shadow my-3">
+                    <div class="card shadow my-3 animate__animated animate__fadeIn">
                         {% if room.photo %}
                             <img src="{{ room.photo.url }}" class="card-img-top" alt="Photo">
                         {% else %}
