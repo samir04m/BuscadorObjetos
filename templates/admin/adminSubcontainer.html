@@ -19,8 +19,15 @@
         </h2>
         <hr>
         <div class="row mb-4">
+            <div class="col-sm-12 col-lg-4">
+                {% if subcontainer.photo %}
+                    <img src="{{ subcontainer.photo.url }}" class="img-fluid rounded-start" alt="Photo">
+                {% else %}
+                    <img src="https://dummyimage.com/600x450/707070/c9c9c9.png&text=++Sin foto++" class="img-fluid rounded-start" alt="Photo">
+                {% endif %}
+            </div>
             <div class="col-sm-12 col-lg-8">
-                <div class="card shadow mb-3">
+                <div class="card shadow my-3">
                     <div class="card-body">
                         <h3 class="card-title text-center">Create Object</h3>
                         <form method="post" action="{% url 'myadmin:createobject' %}" enctype="multipart/form-data">
@@ -31,7 +38,7 @@
                                     <!-- <label for="name" class="form-label">Name</label> -->
                                     <input type="text" class="form-control" id="name" name="name" placeholder="Name" required>
                                 </div>
-                                <div class="col-4 mb-3 pt-4">
+                                <div class="col-4 mb-3 pt-2">
                                     <div class="form-check form-switch">
                                         <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked" name="public" checked>
                                         <label class="form-check-label" for="flexSwitchCheckChecked">Public</label>
@@ -47,18 +54,11 @@
                                 </div>
                             </div>
                             <div class="text-center">
-                                <button type="submit" class="btn btn-primary" onClick="this.form.submit(); this.disabled=true; this.value='Sending…'; ">Create</button>
+                                <button type="submit" class="btn btn-primary" onClick="this.form.submit(); this.disabled=true;">Create</button>
                             </div>
                           </form>
                     </div>
                   </div>
-            </div>
-            <div class="col-sm-12 col-lg-4">
-                {% if subcontainer.photo %}
-                    <img src="{{ subcontainer.photo.url }}" class="img-fluid rounded-start" alt="Photo">
-                {% else %}
-                    <img src="https://dummyimage.com/600x450/707070/c9c9c9.png&text=++Sin foto++" class="img-fluid rounded-start" alt="Photo">
-                {% endif %}
             </div>
         </div>
         <h3>Object List</h3>

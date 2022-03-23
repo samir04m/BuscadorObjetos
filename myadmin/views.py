@@ -36,4 +36,4 @@ def CreateObject(request):
         )
         obj.save()
 
-    return redirect('myadmin:adminsubcontainer', 1)
+    return redirect('myadmin:adminsubcontainer', int(request.POST.get('subcontainer_id')))
