@@ -12,13 +12,16 @@
             </ol>
         </nav>
 
-        <h2 class="overflow-hidden">{{subcontainer.name}}
-            <a href="/admin/main/subcontainer/{{subcontainer.id}}/change/" class="btn btn-outline-success float-end" target="_blank">
-                <i class="fa-solid fa-pen-to-square"></i>
-            </a>
+        <h2 class="overflow-hidden">
+            {{subcontainer.name}}
+            {% if request.user.is_superuser %}
+                <a href="/admin/main/subcontainer/{{subcontainer.id}}/change/" class="btn btn-outline-success float-end" target="_blank">
+                    <i class="fa-solid fa-pen-to-square"></i>
+                </a>
+            {% endif %}
         </h2>
         <hr>
-        <div class="row mb-4">
+        <div class="row mb-4 pb-3">
             <div class="col-sm-12 col-lg-4">
                 {% if subcontainer.photo %}
                     <img src="{{ subcontainer.photo.url }}" class="img-fluid rounded-start" alt="Photo">
@@ -27,45 +30,47 @@
                 {% endif %}
             </div>
             <div class="col-sm-12 col-lg-8">
-                <div class="card shadow my-3">
-                    <div class="card-body">
-                        <h3 class="card-title text-center">Create Object</h3>
-                        <form method="post" action="{% url 'myadmin:createobject' %}" enctype="multipart/form-data">
-                            {% csrf_token %}
-                            <input type="number" name="subcontainer_id" value="{{ subcontainer.id }}" class="d-none" required>
-                            <div class="row">
-                                <div class="col-12 mb-3">
-                                    <!-- <label for="name" class="form-label">Name</label> -->
-                                    <input type="text" class="form-control" id="name" name="name" placeholder="Name" required>
-                                </div>
-                                <div class="col-4 mb-3 pt-2">
-                                    <div class="form-check form-switch">
-                                        <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked" name="public" checked>
-                                        <label class="form-check-label" for="flexSwitchCheckChecked">Public</label>
+                {% if request.user.is_superuser %}
+                    <div class="card shadow my-3">
+                        <div class="card-body">
+                            <h3 class="card-title text-center">Create Object</h3>
+                            <form method="post" action="{% url 'myadmin:createobject' %}" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                <input type="number" name="subcontainer_id" value="{{ subcontainer.id }}" class="d-none" required>
+                                <div class="row">
+                                    <div class="col-12 mb-3">
+                                        <!-- <label for="name" class="form-label">Name</label> -->
+                                        <input type="text" class="form-control" id="name" name="name" placeholder="Name" required>
+                                    </div>
+                                    <div class="col-4 mb-3 pt-2">
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked" name="public" checked>
+                                            <label class="form-check-label" for="flexSwitchCheckChecked">Public</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-8 mb-3">
+                                        <!-- <label for="photo" class="form-label">Photo</label> -->
+                                        <input class="form-control" id="photo" name="photo" type="file" accept="image/*" ></input>
+                                    </div>
+                                    <div class="col-12 mb-3">
+                                        <!-- <label for="details" class="form-label">Details</label> -->
+                                        <textarea class="form-control" id="details" name="details" rows="2" placeholder="Details"></textarea>
                                     </div>
                                 </div>
-                                <div class="col-8 mb-3">
-                                    <!-- <label for="photo" class="form-label">Photo</label> -->
-                                    <input class="form-control" id="photo" name="photo" type="file" accept="image/*" ></input>
+                                <div class="text-center">
+                                    <button type="submit" class="btn btn-primary" onClick="this.form.submit(); this.disabled=true;">Create</button>
                                 </div>
-                                <div class="col-12 mb-3">
-                                    <!-- <label for="details" class="form-label">Details</label> -->
-                                    <textarea class="form-control" id="details" name="details" rows="2" placeholder="Details"></textarea>
-                                </div>
-                            </div>
-                            <div class="text-center">
-                                <button type="submit" class="btn btn-primary" onClick="this.form.submit(); this.disabled=true;">Create</button>
-                            </div>
-                          </form>
+                            </form>
+                        </div>
                     </div>
-                  </div>
+                {% endif %}
             </div>
         </div>
-        <h3>Object List</h3>
+        <h3>Lista de objetos</h3>
         <hr>
         <div class="row mb-5">
-            {% for object in subcontainer.object_set.all %}
-                <div class="col-md-6 col-lg-4">
+            {% for object in objects %}
+                <div class="col-xs-6 col-md-6 col-lg-4">
                     <div class="card my-2 shadow">
                         {% if object.photo %}
                             <img src="{{ object.photo.url }}" class="img-fluid rounded-start" alt="Photo">
@@ -73,25 +78,22 @@
                             <img src="https://dummyimage.com/600x450/707070/c9c9c9.png&text=++Sin foto++" class="img-fluid rounded-start" alt="Photo">
                         {% endif %}
 
-                        <div class="card-body">
+                        <div class="card-body pb-1">
                             <h5 class="card-title">
-                                {{ object.name }}
-                                <a href="/admin/main/object/{{object.id}}/change" class="btn btn-outline-success btn-sm float-end" target="_blank">
-                                    <i class="fa-solid fa-pen-to-square"></i>
-                                </a>
-                            </h5>
-                            <div class="row mt-3">
-                                {% for subcontainer in container.subcontainer_set.all %}
-                                    <div class="col-sm-12 col-md-6 my-1">
-                                        <a href="{% url 'myadmin:adminsubcontainer' subcontainer.id %}" class="btn btn-lg btn-outline-primary d-grid">
-                                            {{ subcontainer.name }}
+                                <a href="{% url 'main:details' object.id %}" class="fs-5">{{ object.name }}</a> <br>
+                                {% if request.user.is_superuser %}
+                                <div class="text-center mt-2">
+                                        {% if not object.public %}
+                                            <i class="fa-solid fa-lock"></i>
+                                        {% endif %}
+                                        <a href="/admin/main/object/{{object.id}}/change" class="btn btn-outline-success btn-sm" target="_blank">
+                                            <i class="fa-solid fa-pen-to-square"></i> Editar
                                         </a>
                                     </div>
-                                {% endfor %}
-                            </div>
+                                {% endif %}
+                            </h5>
                         </div>
                     </div>
-
                 </div>
             {% endfor %}
         </div>

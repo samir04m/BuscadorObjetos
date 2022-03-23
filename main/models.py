@@ -71,5 +71,8 @@ class ViewLog(models.Model):
     created_at = models.DateTimeField()
     last_seen = models.DateTimeField()
 
+    class Meta:
+        ordering = ['-last_seen']
+
     def __str__(self):
         return "{} - {}".format(self.user.username, self.object.name)

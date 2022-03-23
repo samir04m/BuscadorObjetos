@@ -9,7 +9,12 @@
 
 {% block content %}
     <div class="container py-4">
-        <h3 class="text-primary">{{object.name}}</h3>
+        <h3 class="text-primary">
+            {% if request.user.is_superuser and not object.public %}
+                <i class="fa-solid fa-lock"></i>
+            {% endif %}
+            {{object.name}}
+        </h3>
         <div class="row pt-3">
             <div class="col-sm-12 col-lg-7 mb-4">
 

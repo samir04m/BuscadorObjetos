@@ -8,23 +8,23 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'main:home' %}">Inicio</a>
+                    <a class="nav-link" href="{% url 'main:home' %}"><i class="fa-solid fa-magnifying-glass fa-flip-horizontal"></i> Buscador</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'main:searches' %}">Mis busquedas</a>
+                    <a class="nav-link" href="{% url 'main:searches' %}"><i class="fa-solid fa-clock-rotate-left"></i> Mis busquedas</a>
                 </li>
                 {% if request.user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'myadmin:adminhome' %}"><i class="fa-solid fa-folder-closed"></i> Explorador</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'main:logout' %}"><i class="fa-solid fa-power-off"></i> Cerrar Sesión</a>
+                    </li>
                     {% if request.user.is_superuser %}
-                        <li class="nav-item">
-                            <a class="nav-link" href="/myadmin">My Admin</a>
-                        </li>
                         <li class="nav-item">
                             <a class="nav-link" href="/admin" target="_blank">Admin</a>
                         </li>
                     {% endif %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'main:logout' %}">Cerrar Sesión</a>
-                    </li>
                 {% endif %}
             </ul>
         </div>

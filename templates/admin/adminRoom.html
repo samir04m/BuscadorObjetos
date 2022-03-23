@@ -3,18 +3,20 @@
 {% block title %}Admin Room{% endblock %}
 
 {% block content %}
-    <div class="container mt-3">
+    <div class="container my-3 pb-4">
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
-              <li class="breadcrumb-item"><a href="{% url 'myadmin:adminhome' %}">My Admin</a></li>
+              <li class="breadcrumb-item"><a href="{% url 'myadmin:adminhome' %}">Inicio</a></li>
               <li class="breadcrumb-item active" aria-current="page">{{ room.name }}</li>
             </ol>
         </nav>
 
         <h2>{{room.name}}
-            <a href="/admin/main/room/{{room.id}}/change/" class="btn btn-outline-success float-end" target="_blank">
-                <i class="fa-solid fa-pen-to-square"></i>
-            </a>
+            {% if request.user.is_superuser %}
+                <a href="/admin/main/room/{{room.id}}/change/" class="btn btn-outline-success float-end" target="_blank">
+                    <i class="fa-solid fa-pen-to-square"></i>
+                </a>
+            {% endif %}
         </h2>
         <hr>
         {% for container in room.container_set.all %}
@@ -31,9 +33,11 @@
                         <div class="card-body">
                             <h5 class="card-title">
                                 {{ container.name }}
-                                <a href="/admin/main/subcontainer/add/?container={{container.id}}" class="btn btn-outline-primary btn-sm float-end" target="_blank">
-                                    <i class="fa-solid fa-circle-plus"></i> Add
-                                </a>
+                                {% if request.user.is_superuser %}
+                                    <a href="/admin/main/subcontainer/add/?container={{container.id}}" class="btn btn-outline-primary btn-sm float-end" target="_blank">
+                                        <i class="fa-solid fa-circle-plus"></i> Add
+                                    </a>
+                                {% endif %}
                             </h5>
                             <div class="row mt-3">
                                 {% for subcontainer in container.subcontainer_set.all %}
@@ -49,10 +53,12 @@
                 </div>
             </div>
         {% endfor %}
-        <div class="text-center my-4">
-            <a href="/admin/main/container/add/?room={{room.id}}" class="btn btn-outline-primary" target="_blank">
-                <i class="fa-solid fa-circle-plus"></i> Add container
-            </a>
-        </div>
+        {% if request.user.is_superuser %}
+            <div class="text-center my-4">
+                <a href="/admin/main/container/add/?room={{room.id}}" class="btn btn-outline-primary" target="_blank">
+                    <i class="fa-solid fa-circle-plus"></i> Add container
+                </a>
+            </div>
+        {% endif %}
     </div>
 {% endblock %}

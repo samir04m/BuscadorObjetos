@@ -18,7 +18,12 @@ def AdminRoom(request, id):
 @login_required(login_url='/ingresar/')
 def AdminSubcontainer(request, id):
     subcontainer = object = get_object_or_404(Subcontainer, id=id)
-    return render(request, 'admin/adminSubcontainer.html', { 'subcontainer':subcontainer })
+    if request.user.is_superuser:
+        objects = subcontainer.object_set.all()
+    else:
+        objects = subcontainer.object_set.filter(public=1)
+    context = { 'subcontainer':subcontainer, 'objects':objects }
+    return render(request, 'admin/adminSubcontainer.html', context)
 
 @login_required(login_url='/ingresar/')
 def CreateObject(request):
