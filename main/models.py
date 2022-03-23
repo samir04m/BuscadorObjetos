@@ -36,6 +36,9 @@ class Subcontainer(models.Model):
     container = models.ForeignKey(Container, on_delete=models.CASCADE)
     photo = models.ImageField(upload_to="subcontainers", null=True, blank=True)
 
+    class Meta:
+        ordering = ['name']
+
     def save(self, *args, **kwargs):
         super(Subcontainer, self).save(*args, **kwargs)
         if self.photo:

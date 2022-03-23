@@ -18,7 +18,7 @@
             <div class="mt-1">
                 <p>Se encontraron {{results|length }} resultados de busqueda</p>
                 {% for r in results %}
-                    <div class="card mb-3">
+                    <div class="card mb-3 shadow-sm">
                         <div class="card-body pt-1 pb-3 px-3">
                             <a href="{% url 'main:details' r.id %}" class="fs-5">{{ r.name }}</a> <br>
                             <div class="px-3 text-muted">

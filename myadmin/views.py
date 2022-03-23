@@ -42,3 +42,43 @@ def CreateObject(request):
         obj.save()
 
     return redirect('myadmin:adminsubcontainer', int(request.POST.get('subcontainer_id')))
+
+@login_required(login_url='/ingresar/')
+def CreateRoom(request):
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        if name:
+            obj = Room(
+                name = name,
+                photo = request.FILES.get('photo')
+            )
+            obj.save()
+    return redirect('myadmin:adminhome')
+
+@login_required(login_url='/ingresar/')
+def CreateContainer(request):
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        if name:
+            obj = Container(
+                name = request.POST.get('name'),
+                photo = request.FILES.get('photo'),
+                room_id = int(request.POST.get('room_id')),
+            )
+            obj.save()
+    return redirect('myadmin:adminroom', int(request.POST.get('room_id')))
+
+@login_required(login_url='/ingresar/')
+def CreateSubcontainer(request):
+    if request.method == 'POST':
+        name = request.POST.get('name') if request.POST.get('name') else "Ninguno"
+        container_id = int(request.POST.get('container_id'))
+        obj = Subcontainer.objects.filter(name=name, container_id=container_id).first()
+        if not obj:
+            obj = Subcontainer(
+                name = name,
+                photo = request.FILES.get('photo'),
+                container_id = container_id,
+            )
+            obj.save()
+    return redirect('myadmin:adminroom', int(request.POST.get('room_id')))

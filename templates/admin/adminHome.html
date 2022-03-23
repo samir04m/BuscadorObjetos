@@ -4,7 +4,7 @@
 
 {% block content %}
     <div class="container my-3">
-        <h2>Explorador de objetos</h2>
+        <h2><i class="fa-solid fa-folder-closed"></i> Object Explorer</h2>
         <hr>
         <div class="row">
             {% for room in rooms %}
@@ -29,10 +29,44 @@
         </div>
         {% if request.user.is_superuser %}
             <div class="text-center my-4">
-                <a href="/admin/main/room/add/" class="btn btn-outline-primary" target="_blank">
+                <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#formModal">
                     <i class="fa-solid fa-circle-plus"></i> Create room
-                </a>
+                </button>
+                <!-- <a href="/admin/main/room/add/" class="btn btn-outline-primary" target="_blank">
+                    <i class="fa-solid fa-circle-plus"></i> Create room
+                </a> -->
             </div>
         {% endif %}
     </div>
+
+    <div class="modal fade" id="formModal" tabindex="-1" aria-labelledby="formModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="formModalLabel">Create new room</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form method="post" action="{% url 'myadmin:createroom' %}" enctype="multipart/form-data">
+                    <div class="modal-body">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-12 mb-3">
+                                <label for="name" class="form-label">Name</label>
+                                <input type="text" class="form-control" id="name" name="name" placeholder="Name" required>
+                            </div>
+                            <div class="col-12 mb-3">
+                                <label for="photo" class="form-label">Photo</label>
+                                <input class="form-control" id="photo" name="photo" type="file" accept="image/*" ></input>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary" onClick="this.form.submit(); this.disabled=true;">Save changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
 {% endblock %}
