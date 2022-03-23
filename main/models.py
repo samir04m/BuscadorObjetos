@@ -1,5 +1,7 @@
+import os
 from django.db import models
 from django.contrib.auth.models import User
+from django.dispatch import receiver
 from PIL import Image
 
 class Room(models.Model):
@@ -64,6 +66,17 @@ class Object(models.Model):
     def __str__(self):
         return str(self.name)
 
+@receiver(models.signals.post_delete, sender=Object)
+def auto_delete_file_on_delete(sender, instance, **kwargs):
+    if instance.photo:
+        if os.path.isfile(instance.photo.path):
+            os.remove(instance.photo.path)
+
+@receiver(models.signals.pre_save, sender=Object)
+def auto_delete_file_on_change(sender, instance, **kwargs):
+    if instance.photo:
+        if os.path.isfile(instance.photo.path):
+            os.remove(instance.photo.path)
 
 class ViewLog(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)

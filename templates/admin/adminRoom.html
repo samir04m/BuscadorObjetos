@@ -4,7 +4,18 @@
 
 {% block content %}
     <div class="container mt-3">
-        <h2>Admin: {{room}}</h2>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a href="{% url 'myadmin:adminhome' %}">My Admin</a></li>
+              <li class="breadcrumb-item active" aria-current="page">{{ room.name }}</li>
+            </ol>
+        </nav>
+
+        <h2>{{room.name}}
+            <a href="/admin/main/room/{{room.id}}/change/" class="btn btn-outline-success float-end" target="_blank">
+                <i class="fa-solid fa-pen-to-square"></i>
+            </a>
+        </h2>
         <hr>
         {% for container in room.container_set.all %}
             <div class="card my-4 shadow">
@@ -27,14 +38,11 @@
                             <div class="row mt-3">
                                 {% for subcontainer in container.subcontainer_set.all %}
                                     <div class="col-sm-12 col-md-6 my-1">
-                                        <a href="/admin/main/object/add/?subcontainer={{subcontainer.id}}" class="btn btn-lg btn-outline-primary d-grid" target="_blank">
+                                        <a href="{% url 'myadmin:adminsubcontainer' subcontainer.id %}" class="btn btn-lg btn-outline-primary d-grid">
                                             {{ subcontainer.name }}
                                         </a>
                                     </div>
                                 {% endfor %}
-                            </div>
-                            <div class="text-center my-4">
-                                
                             </div>
                         </div>
                     </div>

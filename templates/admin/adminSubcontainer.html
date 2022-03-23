@@ -1,0 +1,99 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Admin Subcontainer{% endblock %}
+
+{% block content %}
+    <div class="container my-3">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a href="{% url 'myadmin:adminhome' %}">My Admin</a></li>
+              <li class="breadcrumb-item"><a href="{% url 'myadmin:adminroom' subcontainer.container.room.id %}">{{ subcontainer.container.room.name }}</a></li>
+              <li class="breadcrumb-item active" aria-current="page"> {{ subcontainer.name }}</li>
+            </ol>
+        </nav>
+
+        <h2 class="overflow-hidden">{{subcontainer.name}}
+            <a href="/admin/main/subcontainer/{{subcontainer.id}}/change/" class="btn btn-outline-success float-end" target="_blank">
+                <i class="fa-solid fa-pen-to-square"></i>
+            </a>
+        </h2>
+        <hr>
+        <div class="row mb-4">
+            <div class="col-sm-12 col-lg-8">
+                <div class="card shadow mb-3">
+                    <div class="card-body">
+                        <h3 class="card-title text-center">Create Object</h3>
+                        <form method="post" action="{% url 'myadmin:createobject' %}" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <input type="number" name="subcontainer_id" value="{{ subcontainer.id }}" class="d-none" required>
+                            <div class="row">
+                                <div class="col-12 mb-3">
+                                    <!-- <label for="name" class="form-label">Name</label> -->
+                                    <input type="text" class="form-control" id="name" name="name" placeholder="Name" required>
+                                </div>
+                                <div class="col-4 mb-3 pt-4">
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked" name="public" checked>
+                                        <label class="form-check-label" for="flexSwitchCheckChecked">Public</label>
+                                    </div>
+                                </div>
+                                <div class="col-8 mb-3">
+                                    <!-- <label for="photo" class="form-label">Photo</label> -->
+                                    <input class="form-control" id="photo" name="photo" type="file" accept="image/*" ></input>
+                                </div>
+                                <div class="col-12 mb-3">
+                                    <!-- <label for="details" class="form-label">Details</label> -->
+                                    <textarea class="form-control" id="details" name="details" rows="2" placeholder="Details"></textarea>
+                                </div>
+                            </div>
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-primary" onClick="this.form.submit(); this.disabled=true; this.value='Sending…'; ">Create</button>
+                            </div>
+                          </form>
+                    </div>
+                  </div>
+            </div>
+            <div class="col-sm-12 col-lg-4">
+                {% if subcontainer.photo %}
+                    <img src="{{ subcontainer.photo.url }}" class="img-fluid rounded-start" alt="Photo">
+                {% else %}
+                    <img src="https://dummyimage.com/600x450/707070/c9c9c9.png&text=++Sin foto++" class="img-fluid rounded-start" alt="Photo">
+                {% endif %}
+            </div>
+        </div>
+        <h3>Object List</h3>
+        <hr>
+        <div class="row mb-5">
+            {% for object in subcontainer.object_set.all %}
+                <div class="col-md-6 col-lg-4">
+                    <div class="card my-2 shadow">
+                        {% if object.photo %}
+                            <img src="{{ object.photo.url }}" class="img-fluid rounded-start" alt="Photo">
+                        {% else %}
+                            <img src="https://dummyimage.com/600x450/707070/c9c9c9.png&text=++Sin foto++" class="img-fluid rounded-start" alt="Photo">
+                        {% endif %}
+
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                {{ object.name }}
+                                <a href="/admin/main/object/{{object.id}}/change" class="btn btn-outline-success btn-sm float-end" target="_blank">
+                                    <i class="fa-solid fa-pen-to-square"></i>
+                                </a>
+                            </h5>
+                            <div class="row mt-3">
+                                {% for subcontainer in container.subcontainer_set.all %}
+                                    <div class="col-sm-12 col-md-6 my-1">
+                                        <a href="{% url 'myadmin:adminsubcontainer' subcontainer.id %}" class="btn btn-lg btn-outline-primary d-grid">
+                                            {{ subcontainer.name }}
+                                        </a>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
