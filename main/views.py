@@ -4,6 +4,7 @@ from django.http.response import HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.views import LoginView
 from django.contrib.auth.models import User
 from datetime import datetime
 from django.db.models import Q
@@ -11,37 +12,14 @@ from functools import reduce
 import operator
 from .models import *
 
-def Igresar(request):
-    names = ["Andy", "Pilar", "Yesid", "Samir"]
-    for name in names:
-        user = User.objects.filter(username=name).first()
-        if not user:
-            newUser = User.objects.create_user(
-                username=name,
-                email=name+"@email.com",
-                password="pass0100"
-            )
-            if name == "Samir":
-                newUser.is_superuser = True
-                newUser.is_staff = True
-                newUser.save()
-    return render(request, 'main/login.html')
-
-def Login(request, username):
-    user = authenticate(username=username, password="pass0100")
-    if user:
-        login(request, user)
-        return HttpResponseRedirect('/')
-    else:
-        return HttpResponse("No es posible ingresar con este usuario. Póngase en contacto con el administrador.")
+class CustomLoginView(LoginView):
+    template_name = 'main/login.html'
 
 def Logout(request):
     logout(request)
     return HttpResponseRedirect('/')
 
-
-
-@login_required(login_url='/ingresar/')
+@login_required
 def Home(request):
     context = {}
     if request.method == 'POST':
@@ -59,7 +37,7 @@ def Home(request):
 
     return render(request, 'main/home.html', context)
 
-@login_required(login_url='/ingresar/')
+@login_required
 def Details(request, id):
     if request.user.is_superuser:
         object = get_object_or_404(Object, id=id)
@@ -81,7 +59,7 @@ def Details(request, id):
 
     return render(request, 'main/details.html', { 'object':object })
 
-@login_required(login_url='/ingresar/')
+@login_required
 def MySearches(request):
     searches = ViewLog.objects.filter(user=request.user)
     return render(request, 'main/mysearches.html', { 'searches':searches })

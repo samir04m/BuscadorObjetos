@@ -1,37 +1,34 @@
 {% extends 'base/base.html' %}
 
-{% block title %}Identificate{% endblock %}
+{% block title %}Login{% endblock %}
 
 {% block content %}
     <div class="container">
-        <div class="m-4 p-5 bg-light rounded-3 shadow animate__animated animate__fadeIn">
-            <div class="container-fluid py-5">
-                <h1 class="display-5 fw-bold">
-                    <i class="fa-brands fa-searchengin"></i> Buscador de objetos
-                </h1>
-                <p class="col-11 fs-4 pb-3">
-                    Esta herramienta le permitirá encontrar de forma rápida y sencilla la ubicación de un objeto en particular dentro de su casa.
-                </p>
-                <p class="col-10 fs-5">
-                    Para comenzar ingrese con su usuario asignado al sistema:
-                </p>
-                <div class="text-center">
-                    <a href="{% url 'main:login' 'Andy' %}" class="btn btn-outline-primary btn-lg m-1">
-                        <i class="fa-solid fa-user-astronaut fa-5x"></i>
-                        <div class="mt-2 fw-bold">Andy</div>
-                    </a>
-                    <a href="{% url 'main:login' 'Pilar' %}" class="btn btn-outline-primary btn-lg m-1">
-                        <i class="fas fa-user fa-5x"></i>
-                        <div class="mt-2 fw-bold">Pilar</div>
-                    </a>
-                    <a href="{% url 'main:login' 'Yesid' %}" class="btn btn-outline-primary btn-lg m-1">
-                        <i class="fas fa-user-tie fa-5x"></i>
-                        <div class="mt-2 fw-bold">Yesid</div>
-                    </a>
-                    <a href="{% url 'main:login' 'Samir' %}" class="btn btn-outline-primary btn-lg m-1">
-                        <i class="fas fa-user-secret fa-5x"></i>
-                        <div class="mt-2 fw-bold">Samir</div>
-                    </a>
+        <div class="row justify-content-center">
+            <div class="col-md-4">
+                <div class="card shadow rounded-4">
+                    <div class="card-body p-4">
+                        <h4 class="card-title text-center">Login</h4>
+
+                        {% if form.errors %}
+                            <div class="alert alert-danger mt-3" role="alert">
+                                Username or password incorrect.
+                            </div>
+                        {% endif %}
+
+                        <form method="post">
+                            {% csrf_token %}
+                            <div class="mb-3">
+                                <label for="id_username" class="form-label">Usename</label>
+                                <input type="text" name="username" class="form-control" id="id_username" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="id_password" class="form-label">Password</label>
+                                <input type="password" name="password" class="form-control" id="id_password" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary w-100">Login</button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>

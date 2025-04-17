@@ -1,32 +1,62 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
     <div class="container">
-        <a class="navbar-brand" href="{% url 'main:home' %}"><i class="fa-brands fa-searchengin"></i> Buscardor de objetos</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <a class="navbar-brand" href="{% url 'main:home' %}">
+            <i class="fa-light fa-radar"></i> Object Finder
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor04"
+            aria-controls="navbarColor04" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav">
+        <div class="collapse navbar-collapse" id="navbarColor04">
+            <ul class="navbar-nav me-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'main:home' %}"><i class="fa-solid fa-magnifying-glass fa-flip-horizontal"></i> Buscador</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'main:searches' %}"><i class="fa-solid fa-clock-rotate-left"></i> Mis busquedas</a>
+                    <a class="nav-link active" href="{% url 'main:home' %}"><i class="fa-light fa-magnifying-glass"></i> Search
+                        <span class="visually-hidden">(current)</span>
+                    </a>
                 </li>
                 {% if request.user.is_authenticated %}
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'myadmin:adminhome' %}"><i class="fa-solid fa-folder-closed"></i> Explorador</a>
+                        <a class="nav-link" href="{% url 'main:searches' %}"> <i class="fa-light fa-clock-rotate-left"></i> My searches</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'main:logout' %}"><i class="fa-solid fa-power-off"></i> Cerrar Sesión</a>
+                        <a class="nav-link" href="{% url 'myadmin:adminhome' %}"><i class="fa-light fa-browser"></i> Manage</a>
                     </li>
                     {% if request.user.is_superuser %}
                         <li class="nav-item">
-                            <a class="nav-link" href="/admin" target="_blank">Admin</a>
+                            <a class="nav-link" href="/admin" target="_blank"><i class="fa-light fa-user-tie"></i> Admin</a>
                         </li>
                     {% endif %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'main:logout' %}"><i class="fa-thin fa-right-from-bracket"></i> Sign out</a>
+                    </li>
                 {% endif %}
+                <li class="nav-item dropdown" data-bs-theme="light">
+                    <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="theme-menu" aria-expanded="false"
+                        data-bs-toggle="dropdown" data-bs-display="static" aria-label="Toggle theme">
+                        <!-- <i class="fa-duotone fa-solid fa-circle-half"></i> -->
+                        <i class="fa-light fa-lightbulb"></i>
+                        <span class="d-lg-none ms-2">Toggle theme</span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li>
+                            <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="light"
+                                aria-pressed="false">
+                                <i class="bi bi-sun-fill"></i><span class="ms-2"><i class="fa-light fa-lightbulb-on"></i> Light</span>
+                            </button>
+                        </li>
+                        <li>
+                            <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="dark"
+                                aria-pressed="true">
+                                <i class="bi bi-moon-stars-fill"></i><span class="ms-2"><i class="fa-light fa-lightbulb-slash"></i> Dark</span>
+                            </button>
+                        </li>
+                    </ul>
+                </li>
             </ul>
+            <form class="d-flex">
+                <input class="form-control me-sm-2" type="search" placeholder="Search">
+                <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Search</button>
+            </form>
         </div>
     </div>
 </nav>
