@@ -13,7 +13,7 @@
     <div class="container">
         <h5>
             {% if request.user.is_superuser and not object.public %}
-                <i class="fa-solid fa-lock"></i>
+                <i class="fa-light fa-lock-keyhole"></i>
             {% endif %}
             {{object.name}}
         </h5>

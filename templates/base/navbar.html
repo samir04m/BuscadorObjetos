@@ -50,8 +50,8 @@
                     </ul>
                 </li>
             </ul>
-            <form class="d-flex">
-                <input class="form-control me-sm-2" type="search" placeholder="Search">
+            <form class="d-flex" method="GET" action="{% url 'main:home' %}">
+                <input class="form-control me-sm-2" type="search" name="query" value="{{query}}" placeholder="Search">
                 <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Search</button>
             </form>
         </div>
