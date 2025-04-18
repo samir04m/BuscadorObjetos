@@ -5,45 +5,43 @@ from django.core.files.storage import FileSystemStorage
 from datetime import datetime
 from main.models import *
 
-@login_required(login_url='/ingresar/')
+@login_required
 def AdminHome(request):
     rooms = Room.objects.all()
     return render(request, 'admin/adminHome.html', { 'rooms':rooms })
 
-@login_required(login_url='/ingresar/')
+@login_required
 def AdminRoom(request, id):
     room = object = get_object_or_404(Room, id=id)
     return render(request, 'admin/adminRoom.html', { 'room':room })
 
-@login_required(login_url='/ingresar/')
-def AdminSubcontainer(request, id):
-    subcontainer = object = get_object_or_404(Subcontainer, id=id)
+@login_required
+def AdminSubContainer(request, id):
+    subContainer = object = get_object_or_404(SubContainer, id=id)
     if request.user.is_superuser:
-        objects = subcontainer.object_set.all()
+        objects = subContainer.object_set.all()
     else:
-        objects = subcontainer.object_set.filter(public=1)
-    context = { 'subcontainer':subcontainer, 'objects':objects }
-    return render(request, 'admin/adminSubcontainer.html', context)
+        objects = subContainer.object_set.filter(public=1)
+    context = { 'subContainer':subContainer, 'objects':objects }
+    return render(request, 'admin/adminSubContainer.html', context)
 
-@login_required(login_url='/ingresar/')
+@login_required
 def CreateObject(request):
     if request.method == 'POST':
-        public = 1 if request.POST.get('public') else 0
- 
+        public = True if request.POST.get('public') else False
+
         obj = Object(
             name = request.POST.get('name'),
-            subcontainer_id = int(request.POST.get('subcontainer_id')),
+            subContainer_id = int(request.POST.get('subContainer_id')),
             photo = request.FILES.get('photo'),
             public = public,
-            details =  request.POST.get('details'),
-            created_at = datetime.now(),
-            updated_at = datetime.now()
+            details =  request.POST.get('details')
         )
         obj.save()
 
-    return redirect('myadmin:adminsubcontainer', int(request.POST.get('subcontainer_id')))
+    return redirect('myadmin:adminsubcontainer', int(request.POST.get('subContainer_id')))
 
-@login_required(login_url='/ingresar/')
+@login_required
 def CreateRoom(request):
     if request.method == 'POST':
         name = request.POST.get('name')
@@ -55,7 +53,7 @@ def CreateRoom(request):
             obj.save()
     return redirect('myadmin:adminhome')
 
-@login_required(login_url='/ingresar/')
+@login_required
 def CreateContainer(request):
     if request.method == 'POST':
         name = request.POST.get('name')
@@ -68,14 +66,14 @@ def CreateContainer(request):
             obj.save()
     return redirect('myadmin:adminroom', int(request.POST.get('room_id')))
 
-@login_required(login_url='/ingresar/')
-def CreateSubcontainer(request):
+@login_required
+def CreateSubContainer(request):
     if request.method == 'POST':
         name = request.POST.get('name') if request.POST.get('name') else "Ninguno"
         container_id = int(request.POST.get('container_id'))
-        obj = Subcontainer.objects.filter(name=name, container_id=container_id).first()
+        obj = SubContainer.objects.filter(name=name, container_id=container_id).first()
         if not obj:
-            obj = Subcontainer(
+            obj = SubContainer(
                 name = name,
                 photo = request.FILES.get('photo'),
                 container_id = container_id,

@@ -18,8 +18,8 @@ class Room(models.Model):
 
 class Container(models.Model):
     name = models.CharField(max_length=200)
-    room = models.ForeignKey(Room, on_delete=models.CASCADE)
     photo = models.ImageField(upload_to="containers", null=True, blank=True)
+    room = models.ForeignKey(Room, on_delete=models.CASCADE)
 
     def save(self, *args, **kwargs):
         super(Container, self).save(*args, **kwargs)
@@ -31,16 +31,16 @@ class Container(models.Model):
         return "{} ({})".format(self.name, self.room.name)
 
 
-class Subcontainer(models.Model):
+class SubContainer(models.Model):
     name = models.CharField(max_length=200)
+    photo = models.ImageField(upload_to="subContainers", null=True, blank=True)
     container = models.ForeignKey(Container, on_delete=models.CASCADE)
-    photo = models.ImageField(upload_to="subcontainers", null=True, blank=True)
 
     class Meta:
         ordering = ['name']
 
     def save(self, *args, **kwargs):
-        super(Subcontainer, self).save(*args, **kwargs)
+        super(SubContainer, self).save(*args, **kwargs)
         if self.photo:
             image = Image.open(self.photo.path)
             image.save(self.photo.path, quality=20, optimize=True)
@@ -51,12 +51,16 @@ class Subcontainer(models.Model):
 
 class Object(models.Model):
     name = models.CharField(max_length=200)
-    subcontainer = models.ForeignKey(Subcontainer, on_delete=models.CASCADE)
+    public = models.BooleanField(default=True)
+    details = models.CharField(max_length=250, null=True, blank=True)
     photo = models.ImageField(upload_to="objects", null=True, blank=True)
-    public = models.IntegerField(default=0)
-    details = models.TextField(null=True, blank=True)
-    created_at = models.DateTimeField()
-    updated_at = models.DateTimeField()
+    subContainer = models.ForeignKey(SubContainer, on_delete=models.CASCADE)
+
+    class Meta:
+        indexes = [
+            models.Index(fields=['name']),
+            models.Index(fields=['public']),
+        ]
 
     def save(self, *args, **kwargs):
         super(Object, self).save(*args, **kwargs)
@@ -71,7 +75,6 @@ class Object(models.Model):
 class ViewLog(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     object = models.ForeignKey(Object, on_delete=models.CASCADE)
-    created_at = models.DateTimeField()
     last_seen = models.DateTimeField()
 
     class Meta:

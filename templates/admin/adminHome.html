@@ -1,25 +1,24 @@
 {% extends 'base/base.html' %}
+{% load static %}
+{% load myTags %}
 
 {% block title %}Admin{% endblock %}
 
 {% block content %}
     <div class="container my-3">
-        <h2 class="animate__animated animate__fadeInDown"><i class="fa-light fa-browser"></i> Object Explorer</h2>
+        <h5 class="animate__animated animate__fadeInDown"><i class="fa-light fa-browser"></i> Manage</h5>
         <hr>
         <div class="row">
             {% for room in rooms %}
-                <div class="col-sm-12 col-md-6 col-lg-4">
+                <div class="col-6 col-lg-3">
                     <div class="card shadow my-3 animate__animated animate__fadeIn">
-                        {% if room.photo %}
-                            <img src="{{ room.photo.url }}" class="card-img-top" alt="Photo">
-                        {% else %}
-                            <img src="https://dummyimage.com/600x450/707070/c9c9c9.png&text=++Sin foto++" class="card-img-top" alt="Photo">
-                        {% endif %}
+                        <img src="{% image_or_default room.photo %}" class="card-img-top" alt="Room photo">
+
                         <div class="card-body">
-                            <h5 class="card-title">{{ room.name }}</h5>
+                            <h6 class="card-title">{{ room.name }}</h6>
                             <div class="text-center">
                                 <a href="{% url 'myadmin:adminroom' room.id %}" class="card-link btn btn-outline-primary">
-                                    <i class="fa-solid fa-arrow-up-right-from-square"></i> Explorar
+                                    <i class="fa-light fa-arrow-up-right-from-square"></i> Manage
                                 </a>
                             </div>
                         </div>
@@ -30,11 +29,8 @@
         {% if request.user.is_superuser %}
             <div class="text-center my-4">
                 <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#formModal">
-                    <i class="fa-solid fa-circle-plus"></i> Create room
+                    <i class="fa-light fa-plus"></i> Add room
                 </button>
-                <!-- <a href="/admin/main/room/add/" class="btn btn-outline-primary" target="_blank">
-                    <i class="fa-solid fa-circle-plus"></i> Create room
-                </a> -->
             </div>
         {% endif %}
     </div>

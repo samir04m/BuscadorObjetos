@@ -1,4 +1,6 @@
 {% extends 'base/base.html' %}
+{% load static %}
+{% load myTags %}
 
 {% block title %}Detalles{% endblock %}
 
@@ -8,40 +10,40 @@
 {% endblock %}
 
 {% block content %}
-    <div class="container py-4">
-        <h3 class="text-primary">
+    <div class="container">
+        <h5>
             {% if request.user.is_superuser and not object.public %}
                 <i class="fa-solid fa-lock"></i>
             {% endif %}
             {{object.name}}
-        </h3>
-        <div class="row pt-3">
+        </h5>
+        <div class="row pt-2">
             <div class="col-sm-12 col-lg-7 mb-4">
 
-                <div class="accordion" id="accordionExample">
+                <div class="accordion" id="accordionLocation">
                     <div class="accordion-item">
                         <h2 class="accordion-header" id="headingOne">
                             <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne"
                                 aria-expanded="true" aria-controls="collapseOne">
-                                Resumen de ubicación
+                                Location Overview
                             </button>
                         </h2>
                         <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne"
-                            data-bs-parent="#accordionExample">
+                            data-bs-parent="#accordionLocation">
                             <div class="accordion-body">
-                                <table class="table table-responsive-sm table-borderless">
+                                <table class="table table-responsive-sm table-borderless m-0">
                                     <tbody>
                                         <tr>
-                                            <th>Lugar</th>
-                                            <td>{{ object.subcontainer.container.room.name}}</td>
+                                            <th>Room:</th>
+                                            <td>{{ object.subContainer.container.room.name}}</td>
                                         </tr>
                                         <tr>
-                                            <th>Contenedor</th>
-                                            <td>{{ object.subcontainer.container.name}}</td>
+                                            <th>Container:</th>
+                                            <td>{{ object.subContainer.container.name}}</td>
                                         </tr>
                                         <tr>
-                                            <th>Subcontenedor</th>
-                                            <td>{{ object.subcontainer.name}}</td>
+                                            <th>Sub-container:</th>
+                                            <td>{{ object.subContainer.name}}</td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -52,29 +54,28 @@
                         <h2 class="accordion-header" id="headingTwo">
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                                 data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                Ubicación detallada
+                                Location Details
                             </button>
                         </h2>
                         <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo"
-                            data-bs-parent="#accordionExample">
+                            data-bs-parent="#accordionLocation">
                             <div class="accordion-body">
-                                <h5>La ubicación del objeto es la siguente:</h5>
                 
-                                <p class="fs-5 mb-1 mt-3"> <b> 1. Lugar:</b> {{ object.subcontainer.container.room.name}}</p>
-                                {% if object.subcontainer.container.room.photo %}
-                                    <img src="{{ object.subcontainer.container.room.photo.url }}" class="img-fluid" alt="Photo"
+                                <p class="fs-5 mb-1 mt-3"> <b> 1. Room:</b> {{ object.subContainer.container.room.name}}</p>
+                                {% if object.subContainer.container.room.photo %}
+                                    <img src="{{ object.subContainer.container.room.photo.url }}" class="img-fluid rounded" alt="Room Photo"
                                     id="imgRoom">
                                 {% endif %}
                 
-                                <p class="fs-5 mb-1 mt-3"> <b> 2. Contenedor:</b> {{ object.subcontainer.container.name}}</p>
-                                {% if object.subcontainer.container.photo %}
-                                    <img src="{{ object.subcontainer.container.photo.url }}" class="img-fluid" alt="Photo"
+                                <p class="fs-5 mb-1 mt-3"> <b> 2. Container:</b> {{ object.subContainer.container.name}}</p>
+                                {% if object.subContainer.container.photo %}
+                                    <img src="{{ object.subContainer.container.photo.url }}" class="img-fluid rounded" alt="Container Photo"
                                     id="imgContainer">
                                 {% endif %}
                 
-                                <p class="fs-5 mb-1 mt-3"> <b> 3. Subcontenedor:</b> {{ object.subcontainer.name}}</p>
-                                {% if object.subcontainer.photo %}
-                                    <img src="{{ object.subcontainer.photo.url }}" class="img-fluid" alt="Photo" id="imgSubcontainer">
+                                <p class="fs-5 mb-1 mt-3"> <b> 3. Sub-container:</b> {{ object.subContainer.name}}</p>
+                                {% if object.subContainer.photo %}
+                                    <img src="{{ object.subContainer.photo.url }}" class="img-fluid rounded" alt="Sub-container Photo" id="imgSubContainer">
                                 {% endif %}
                             </div>
                         </div>
@@ -82,23 +83,20 @@
                 </div>                
             </div>
             <div class="col-sm-12 offset-lg-1 col-lg-4">
-                <h5>Foto del Objeto</h5>
-                {% if object.photo %}
-                    <img src="{{ object.photo.url }}" class="img-fluid" alt="Photo" id="imgObject">
-                {% else %}
-                    <img src="https://dummyimage.com/600x500/707070/c9c9c9.png&text=++Sin foto++" class="img-fluid" alt="Photo">
-                {% endif %}
-                <div class="card my-2">
-                    <div class="card-body py-2">
-                        <h5>Comentarios</h5>
+                
+                <div class="card mb-3">
+                    <img src="{% image_or_default object.photo %}" class="card-img-top" alt="Object Photo" id="imgObject">
+
+                    <div class="card-body">
                         {% if object.details %}
                             <p class="mb-1">{{ object.details }}</p>
                         {% else %}
-                            <p class="mb-1">Sin comentarios</p>
+                            <p class="mb-1 text-muted">No details available</p>
                         {% endif %}
                     </div>
                 </div>
-                <h5>Usuarios que han consultado este objeto</h5>
+
+                <h5>Users who viewed this object</h5>
                 <ul>
                     {% for i in object.viewlog_set.all %}
                         <li>{{ i.user }} <span class="text-muted">{{ i.last_seen|date:'d/m/Y h:i A' }}</span></li>
@@ -108,21 +106,3 @@
         </div>
     </div>
 {% endblock %}
-
-{% block script %}
-    <script type="text/javascript">
-        {% if object.subcontainer.container.room.photo %}
-            const viewerRoom = new Viewer(document.getElementById('imgRoom'));
-        {% endif %}
-        {% if object.subcontainer.container.photo %}
-            const viewerContainer = new Viewer(document.getElementById('imgContainer'));
-        {% endif %}
-        {% if object.subcontainer.photo %}
-            const viewerSubcontainer = new Viewer(document.getElementById('imgSubcontainer')    );
-        {% endif %}
-        {% if object.photo %}
-            const viewerObject = new Viewer(document.getElementById('imgObject'));
-        {% endif %}
-    </script>
-{% endblock %}
-

@@ -52,7 +52,6 @@ def Details(request, id):
         log = ViewLog(
             user = request.user,
             object = object,
-            created_at = datetime.now(),
             last_seen = datetime.now()
         )
     log.save()

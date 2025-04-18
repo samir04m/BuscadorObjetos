@@ -1,13 +1,15 @@
 {% extends 'base/base.html' %}
+{% load static %}
+{% load myTags %}
 
 {% block title %}Admin Room{% endblock %}
 
 {% block content %}
-    <div class="container my-3">
+    <div class="container">
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
-              <li class="breadcrumb-item"><a href="{% url 'myadmin:adminhome' %}">Inicio</a></li>
-              <li class="breadcrumb-item active" aria-current="page">{{ room.name }}</li>
+                <li class="breadcrumb-item"><a href="{% url 'myadmin:adminhome' %}">Manage</a></li>
+                <li class="breadcrumb-item active" aria-current="page">{{ room.name }}</li>
             </ol>
         </nav>
 
@@ -15,68 +17,57 @@
             {{room.name}}
             {% if request.user.is_superuser %}
                 <a href="/admin/main/room/{{room.id}}/change/" class="btn btn-outline-success float-end" target="_blank">
-                    <i class="fa-solid fa-pen-to-square"></i>
+                    <i class="fa-light fa-pen-to-square"></i>
                 </a>
             {% endif %}
         </h2>
         <hr>
-        {% for container in room.container_set.all %}
-            <div class="card my-4 shadow">
-                <div class="row g-0">
-                    <div class="col-md-4">
-                        {% if container.photo %}
-                            <img src="{{ container.photo.url }}" class="img-fluid rounded-start" alt="Photo">
-                        {% else %}
-                            <img src="https://dummyimage.com/600x450/707070/c9c9c9.png&text=++Sin foto++" class="img-fluid rounded-start" alt="Photo">
-                        {% endif %}
-                    </div>
-                    <div class="col-md-8">
+        <div class="row">
+            {% for container in room.container_set.all %}
+                <div class="col-lg-6 py-2">
+                    <div class="card shadow">
+                        <img src="{% image_or_default container.photo %}" class="card-img-top" alt="Room Photo">
+
                         <div class="card-body">
-                            <h5 class="card-title">
-                                {{ container.name }}
-                                {% if request.user.is_superuser %}
-                                    <!-- <a href="/admin/main/subcontainer/add/?container={{container.id}}" class="btn btn-outline-primary btn-sm float-end" target="_blank">
-                                        <i class="fa-solid fa-circle-plus"></i> Add
-                                    </a> -->
-                                    <button type="button" class="btn btn-outline-primary btn-sm float-end" data-bs-toggle="modal" data-bs-target="#formModal2" data-bs-whatever="{{ container.id }}">
-                                        <i class="fa-solid fa-circle-plus"></i> Add
-                                    </button>
-                                    <a href="/admin/main/container/{{container.id}}/change" class="btn btn-outline-success btn-sm float-end mx-2" target="_blank">
-                                        <i class="fa-solid fa-pen-to-square"></i> Edit
-                                    </a>
-                                {% endif %}
-                            </h5>
-                            <div class="row mt-3">
+                            <h5 class="card-title">{{ container.name }}</h5>
+
+                            <div class="list-group">
                                 {% for subcontainer in container.subcontainer_set.all %}
-                                    <div class="col-sm-12 col-md-6 my-1">
-                                        <a href="{% url 'myadmin:adminsubcontainer' subcontainer.id %}" class="btn btn-lg btn-outline-primary d-grid">
-                                            {{ subcontainer.name }}
-                                        </a>
-                                    </div>
+                                    <a href="{% url 'myadmin:adminsubcontainer' subcontainer.id %}" class="list-group-item list-group-item-action">{{ subcontainer.name }}</a>
                                 {% endfor %}
                             </div>
+
+                            {% if request.user.is_superuser %}
+                                <div class="text-center mt-3">
+                                    <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#formModal2" data-bs-whatever="{{ container.id }}">
+                                        <i class="fa-light fa-plus"></i> Add sub-container
+                                    </button>
+                                    <a href="/admin/main/container/{{container.id}}/change" class="btn btn-outline-success mx-2" target="_blank">
+                                        <i class="fa-light fa-pen-to-square"></i> Edit room
+                                    </a>
+                                </div>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
-            </div>
-        {% endfor %}
-        {% if request.user.is_superuser %}
-            <div class="text-center my-4">
-                <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#formModal">
-                    <i class="fa-solid fa-circle-plus"></i> Add container
-                </button>
-                <!-- <a href="/admin/main/container/add/?room={{room.id}}" class="btn btn-outline-primary" target="_blank">
-                    <i class="fa-solid fa-circle-plus"></i> Add container
-                </a> -->
-            </div>
-        {% endif %}
+            {% endfor %}
+
+            {% if request.user.is_superuser %}
+                <div class="text-center my-4">
+                    <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#formModal">
+                        <!-- <i class="fa-light fa-plus"></i> -->
+                        <i class="fa-light fa-plus"></i> Add container
+                    </button>
+                </div>
+            {% endif %}
+        </div>
     </div>
 
     <div class="modal fade" id="formModal" tabindex="-1" aria-labelledby="formModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="formModalLabel">Add new container</h5>
+                    <h5 class="modal-title" id="formModalLabel">Add container</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form method="post" action="{% url 'myadmin:createcontainer' %}" enctype="multipart/form-data">
@@ -107,7 +98,7 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="formModal2Label">Add new subcontainer</h5>
+                    <h5 class="modal-title" id="formModal2Label">Add sub-container</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form method="post" action="{% url 'myadmin:createsubcontainer' %}" enctype="multipart/form-data">

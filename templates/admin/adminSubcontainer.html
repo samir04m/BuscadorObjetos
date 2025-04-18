@@ -1,45 +1,43 @@
 {% extends 'base/base.html' %}
+{% load static %}
+{% load myTags %}
 
-{% block title %}Admin Subcontainer{% endblock %}
+{% block title %}Admin SubContainer{% endblock %}
 
 {% block content %}
     <div class="container my-3">
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
-              <li class="breadcrumb-item"><a href="{% url 'myadmin:adminhome' %}">My Admin</a></li>
-              <li class="breadcrumb-item"><a href="{% url 'myadmin:adminroom' subcontainer.container.room.id %}">{{ subcontainer.container.room.name }}</a></li>
-              <li class="breadcrumb-item active" aria-current="page"> {{ subcontainer.name }}</li>
+                <li class="breadcrumb-item"><a href="{% url 'myadmin:adminhome' %}">Manage</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'myadmin:adminroom' subContainer.container.room.id %}">{{ subContainer.container.room.name }}</a></li>
+                <li class="breadcrumb-item active" aria-current="page"> {{ subContainer.name }}</li>
             </ol>
         </nav>
 
-        <h2 class="overflow-hidden">
-            {{subcontainer.name}}
+        <h4 class="overflow-hidden">
+            {{subContainer.name}}
             {% if request.user.is_superuser %}
-                <a href="/admin/main/subcontainer/{{subcontainer.id}}/change/" class="btn btn-outline-success float-end" target="_blank">
-                    <i class="fa-solid fa-pen-to-square"></i>
+                <a href="/admin/main/subcontainer/{{subContainer.id}}/change/" class="btn btn-outline-success float-end" target="_blank">
+                    <i class="fa-light fa-pen-to-square"></i>
                 </a>
             {% endif %}
-        </h2>
+        </h4>
         <hr>
-        <div class="row mb-4 pb-3">
-            <div class="col-sm-12 col-lg-4">
-                {% if subcontainer.photo %}
-                    <img src="{{ subcontainer.photo.url }}" class="img-fluid rounded-start" alt="Photo">
-                {% else %}
-                    <img src="https://dummyimage.com/600x450/707070/c9c9c9.png&text=++Sin foto++" class="img-fluid rounded-start" alt="Photo">
-                {% endif %}
+
+        <div class="row pb-3">
+            <div class="col-6 col-lg-4 pb-4">
+                <img src="{% image_or_default subContainer.photo %}" class="img-fluid rounded" alt="Photo">
             </div>
-            <div class="col-sm-12 col-lg-8">
+            <div class="col-lg-6">
                 {% if request.user.is_superuser %}
-                    <div class="card shadow my-3">
+                    <div class="card shadow">
                         <div class="card-body">
-                            <h3 class="card-title text-center">Create Object</h3>
+                            <h5 class="card-title text-center">Create Object</h5>
                             <form method="post" action="{% url 'myadmin:createobject' %}" enctype="multipart/form-data">
                                 {% csrf_token %}
-                                <input type="number" name="subcontainer_id" value="{{ subcontainer.id }}" class="d-none" required>
+                                <input type="number" name="subContainer_id" value="{{ subContainer.id }}" class="d-none" required>
                                 <div class="row">
                                     <div class="col-12 mb-3">
-                                        <!-- <label for="name" class="form-label">Name</label> -->
                                         <input type="text" class="form-control" id="name" name="name" placeholder="Name" required>
                                     </div>
                                     <div class="col-4 mb-3 pt-2">
@@ -49,12 +47,10 @@
                                         </div>
                                     </div>
                                     <div class="col-8 mb-3">
-                                        <!-- <label for="photo" class="form-label">Photo</label> -->
                                         <input class="form-control" id="photo" name="photo" type="file" accept="image/*" ></input>
                                     </div>
                                     <div class="col-12 mb-3">
-                                        <!-- <label for="details" class="form-label">Details</label> -->
-                                        <textarea class="form-control" id="details" name="details" rows="2" placeholder="Details"></textarea>
+                                        <input class="form-control" id="details" name="details" maxlength="250" placeholder="Details"></input>
                                     </div>
                                 </div>
                                 <div class="text-center">
@@ -66,32 +62,33 @@
                 {% endif %}
             </div>
         </div>
-        <h3>Lista de objetos</h3>
-        <hr>
-        <div class="row mb-5">
-            {% for object in objects %}
-                <div class="col-xs-6 col-md-6 col-lg-4">
-                    <div class="card my-2 shadow">
-                        {% if object.photo %}
-                            <img src="{{ object.photo.url }}" class="img-fluid rounded-start" alt="Photo">
-                        {% else %}
-                            <img src="https://dummyimage.com/600x450/707070/c9c9c9.png&text=++Sin foto++" class="img-fluid rounded-start" alt="Photo">
-                        {% endif %}
 
-                        <div class="card-body pb-1">
+        <h5>Object list</h5>
+        <hr>
+        <div class="row">
+            {% if objects.count == 0 %}
+                <h5 class="text-muted text-center"><i class="fa-light fa-ghost"></i> No objects found.</h5>
+            {% endif %}
+
+            {% for object in objects %}
+                <div class="col-6 col-lg-3">
+                    <div class="card my-2 shadow">
+                        <img src="{% image_or_default object.photo %}" class="card-img-top" alt="Object photo">
+
+                        <div class="card-body">
                             <h5 class="card-title">
-                                <a href="{% url 'main:details' object.id %}" class="fs-5">{{ object.name }}</a> <br>
-                                {% if request.user.is_superuser %}
-                                <div class="text-center mt-2">
-                                        {% if not object.public %}
-                                            <i class="fa-solid fa-lock"></i>
-                                        {% endif %}
-                                        <a href="/admin/main/object/{{object.id}}/change" class="btn btn-outline-success btn-sm" target="_blank">
-                                            <i class="fa-solid fa-pen-to-square"></i> Editar
-                                        </a>
-                                    </div>
-                                {% endif %}
+                                <a href="{% url 'main:details' object.id %}" class="fs-6">{{ object.name }}</a> <br>
                             </h5>
+                            {% if request.user.is_superuser %}
+                            <div class="text-center mt-2">
+                                    {% if not object.public %}
+                                        <i class="fa-solid fa-lock"></i>
+                                    {% endif %}
+                                    <a href="/admin/main/object/{{object.id}}/change" class="btn btn-outline-success btn-sm" target="_blank">
+                                        <i class="fa-light fa-pen-to-square"></i> Edit
+                                    </a>
+                                </div>
+                            {% endif %}
                         </div>
                     </div>
                 </div>

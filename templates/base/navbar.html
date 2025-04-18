@@ -10,13 +10,11 @@
         <div class="collapse navbar-collapse" id="navbarColor04">
             <ul class="navbar-nav me-auto">
                 <li class="nav-item">
-                    <a class="nav-link active" href="{% url 'main:home' %}"><i class="fa-light fa-magnifying-glass"></i> Search
-                        <span class="visually-hidden">(current)</span>
-                    </a>
+                    <a class="nav-link" href="{% url 'main:home' %}"><i class="fa-light fa-house-blank"></i> Home</a>
                 </li>
                 {% if request.user.is_authenticated %}
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'main:searches' %}"> <i class="fa-light fa-clock-rotate-left"></i> My searches</a>
+                        <a class="nav-link" href="{% url 'main:searches' %}"><i class="fa-light fa-clock-rotate-left"></i> Recent Searches</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'myadmin:adminhome' %}"><i class="fa-light fa-browser"></i> Manage</a>
@@ -27,15 +25,14 @@
                         </li>
                     {% endif %}
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'main:logout' %}"><i class="fa-thin fa-right-from-bracket"></i> Sign out</a>
+                        <a class="nav-link" href="{% url 'main:logout' %}"><i class="fa-light fa-right-from-bracket"></i> Sign out</a>
                     </li>
                 {% endif %}
                 <li class="nav-item dropdown" data-bs-theme="light">
-                    <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="theme-menu" aria-expanded="false"
+                    <a class="nav-link dropdown-toggle " href="#" id="theme-menu" aria-expanded="false"
                         data-bs-toggle="dropdown" data-bs-display="static" aria-label="Toggle theme">
-                        <!-- <i class="fa-duotone fa-solid fa-circle-half"></i> -->
                         <i class="fa-light fa-lightbulb"></i>
-                        <span class="d-lg-none ms-2">Toggle theme</span>
+                        <span class="d-lg-none ms-2">Theme</span>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end">
                         <li>

@@ -3,20 +3,20 @@
 {% block title %}Buscar{% endblock %}
 
 {% block content %}
-    <div class="container py-4">
-        <h3>Hola {{request.user.username}}, ¿Qué deseas buscar?</h3>
+    <div class="container">
+        <h3>Hello {{request.user.username}}, What are you looking for?</h3>
         <form method="POST">
             <div class="input-group my-3">
                 {% csrf_token %}
-                <input type="text" class="form-control" name="query" placeholder="Ingresa el nombre del objeto que buscas" 
-                    aria-label="Ingresa el nombre del objeto que buscas" aria-describedby="button-addon2" value="{{query}}">
-                <button class="btn btn-primary btn-lg" type="submit" id="btnSearch" onClick="this.form.submit(); this.disabled=true;" >Buscar</button>
+                <input type="text" class="form-control" name="query" placeholder="Enter the object's name" 
+                    aria-label="Enter the object's name" aria-describedby="button-addon2" value="{{query}}">
+                <button class="btn btn-primary btn-lg" type="submit" id="btnSearch" onClick="this.form.submit(); this.disabled=true;" >Search</button>
             </div>
         </form>
 
         {% if query %}
             <div class="mt-1 animate__animated animate__fadeIn">
-                <p>Se encontraron {{results|length }} resultados de busqueda</p>
+                <p>{{ results|length }} objects found</p>
                 {% for r in results %}
                     <div class="card mb-3 shadow-sm">
                         <div class="card-body pt-1 pb-3 px-3">
