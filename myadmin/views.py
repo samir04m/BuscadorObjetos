@@ -23,7 +23,7 @@ def AdminSubContainer(request, id):
     else:
         objects = subContainer.object_set.filter(public=1)
     context = { 'subContainer':subContainer, 'objects':objects }
-    return render(request, 'admin/adminSubContainer.html', context)
+    return render(request, 'admin/adminSubcontainer.html', context)
 
 @login_required
 def CreateObject(request):
